@@ -1,62 +1,355 @@
 @import "tailwindcss";
+/* Utilidades animate-in/animate-out (usadas por Dialog/Sheet/Select de ui/) */
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ---------------------------------------------------------------------- */
+/* Fuentes (ya alojadas en public/fonts, solo se declaran los @font-face). */
+/* Cada archivo se declara con su peso real dentro de una única familia,   */
+/* así `font-medium` / `font-semibold` / `font-bold` eligen el archivo     */
+/* correcto en vez de que el browser sintetice la negrita.                 */
+/* ---------------------------------------------------------------------- */
 
 @font-face {
   font-family: "Montserrat";
   src: url("/fonts/Montserrat-Regular.woff2") format("woff2");
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "MontserratMedium";
+  font-family: "Montserrat";
   src: url("/fonts/Montserrat-Medium.woff2") format("woff2");
+  font-weight: 600;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "MontserratSemiBold";
+  font-family: "Montserrat";
   src: url("/fonts/Montserrat-SemiBold.woff2") format("woff2");
+  font-weight: 700;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Mulish";
   src: url("/fonts/Mulish-Regular.woff2") format("woff2");
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "MulishBold";
+  font-family: "Mulish";
   src: url("/fonts/Mulish-Bold.woff2") format("woff2");
+  font-weight: 600;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "MulishExtraBold";
+  font-family: "Mulish";
   src: url("/fonts/Mulish-ExtraBold.woff2") format("woff2");
+  font-weight: 700;
   font-display: swap;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Variante `dark:` de Tailwind. Por defecto v4 la ata a                   */
+/* `prefers-color-scheme`, pero acá el tema lo decide el usuario con el    */
+/* toggle del header (atributo `data-theme` en <html>, ver libs/theme.ts). */
+/* El `:not(...)` deja fuera todo lo que esté dentro de un `.theme-light`, */
+/* para que las islas forzadas a claro (ProductCard) no reciban los        */
+/* ajustes `dark:` que traen los componentes de ui/.                       */
+/* ---------------------------------------------------------------------- */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *):not(:where(.theme-light, .theme-light *)));
+
+/* ---------------------------------------------------------------------- */
+/* Tokens crudos. Paleta tomada del logo: azul marino, rojo del listón,    */
+/* blanco y amarillo tenue. Modo claro por defecto, sobreescrito en modo   */
+/* oscuro más abajo. Viven en :root para poder swapearlos sin tocar @theme.*/
+/*                                                                        */
+/* `.theme-light` / `.theme-dark` repiten la misma paleta como clase, así  */
+/* un subárbol puede fijar su tema sin importar el del documento: los      */
+/* tokens declarados sobre el propio elemento le ganan a los heredados de  */
+/* <html>. Se usa en ProductCard, que va siempre en claro.                 */
+/* ---------------------------------------------------------------------- */
+
+/* Tokens que no dependen del tema: viven solo en :root para no repetirlos
+   en cada paleta. */
+:root {
+  --radius: 0.75rem;
+
+  /* Verde de marca de WhatsApp: es un color fijo, no cambia en modo oscuro */
+  --whatsapp: oklch(0.62 0.17 150);
+  --whatsapp-foreground: oklch(1 0 0);
+
+  /* Única definición del stack tipográfico. Los tokens `--font-*` del @theme
+     apuntan todos acá: hoy la web usa una sola familia y el contraste entre
+     título / subtítulo / cuerpo lo da el PESO, no la familia. Si algún día un
+     rol necesita otra tipografía, se le cambia el valor a ese token y las
+     clases (`font-heading`, `font-subheading`) ya están puestas en el markup. */
+  --font-stack-value: "Montserrat", "Mulish", sans-serif;
+
+  /* Pesos por rol. No pueden vivir en @theme como `--font-weight-heading`:
+     Tailwind generaría la clase `font-heading` a partir de ese nombre y
+     colisionaría con la de familia (mismo problema que `shadow-card` abajo). */
+  --weight-heading: 700;
+  --weight-subheading: 600;
+  --weight-body: 400;
+}
+
+:root,
+.theme-light {
+  color-scheme: light;
+
+  --background: oklch(0.985 0.004 250);
+  --foreground: oklch(0.22 0.03 260);
+
+  /* Superficie elevada (cards, popovers): más clara que el fondo general */
+  --surface: oklch(1 0 0);
+
+  /* Azul marino del logo — chrome del sitio (header, footer) y CTA principal */
+  --primary: oklch(0.32 0.096 260);
+  --primary-foreground: oklch(0.985 0.005 250);
+  --primary-dark: oklch(0.25 0.085 262);
+  --primary-light: oklch(0.42 0.1 258);
+
+  /* Rojo del listón del logo — color de énfasis (badges, CTAs sobre el azul) */
+  --secondary: oklch(0.53 0.214 27.5);
+  --secondary-foreground: oklch(0.99 0.005 90);
+
+  /* Amarillo tenue del logo — reservado para destacados/ofertas */
+  --highlight: oklch(0.85 0.15 88);
+  --highlight-foreground: oklch(0.28 0.06 70);
+
+  --muted: oklch(0.52 0.025 258); /* texto secundario */
+  --muted-background: oklch(0.955 0.008 255); /* superficies secundarias (chips, skeletons) */
+
+  --border: oklch(0.905 0.012 255);
+  --input: oklch(0.9 0.012 255);
+  --ring: oklch(0.42 0.1 258);
+
+  --success: oklch(0.56 0.14 152);
+  --success-background: oklch(0.95 0.03 152);
+
+  --danger: oklch(0.53 0.214 27.5);
+  --danger-background: oklch(0.95 0.035 27.5);
+
+  --shadow-elevated-value:
+    0 1px 2px oklch(0.24 0.09 264 / 0.06), 0 8px 24px oklch(0.24 0.09 264 / 0.08);
+  --shadow-header-value: 0 2px 16px oklch(0.18 0.08 264 / 0.35);
+}
+
+[data-theme="dark"],
+.theme-dark {
+  color-scheme: dark;
+
+  --background: oklch(0.18 0.035 262);
+  --foreground: oklch(0.97 0.005 250);
+
+  --surface: oklch(0.24 0.045 262);
+
+  --primary: oklch(0.28 0.09 261);
+  --primary-foreground: oklch(0.985 0.005 250);
+  --primary-dark: oklch(0.22 0.075 262);
+  --primary-light: oklch(0.4 0.1 258);
+
+  --secondary: oklch(0.6 0.2 27.5);
+  --secondary-foreground: oklch(0.99 0.005 90);
+
+  --highlight: oklch(0.85 0.15 88);
+  --highlight-foreground: oklch(0.24 0.06 70);
+
+  --muted: oklch(0.72 0.025 256);
+  --muted-background: oklch(0.28 0.035 260);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.6 0.06 258);
+
+  --success: oklch(0.72 0.15 152);
+  --success-background: oklch(0.3 0.06 152);
+
+  --danger: oklch(0.68 0.185 27.5);
+  --danger-background: oklch(0.3 0.08 27.5);
+
+  --shadow-elevated-value: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px oklch(0 0 0 / 0.35);
+  --shadow-header-value: 0 2px 16px oklch(0 0 0 / 0.45);
+}
+
+/* ---------------------------------------------------------------------- */
+/* @theme: acá es donde Tailwind v4 levanta las clases utilitarias        */
+/* (bg-primary, text-danger, shadow-card, etc.) a partir de las variables  */
+/* de arriba. No hay tailwind.config.js: todo el tema vive en este archivo.*/
+/* ---------------------------------------------------------------------- */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+
+  --color-muted: var(--muted-background);
+  --color-muted-foreground: var(--muted);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-background: var(--success-background);
+  --color-danger: var(--danger);
+  --color-danger-background: var(--danger-background);
+
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-foreground: var(--whatsapp-foreground);
+
+  /* Alias estilo shadcn/ui: los componentes en components/ui/* (Select, Dialog,
+     Card, etc.) ya vienen escritos contra estos nombres de token. Se mapean acá
+     en vez de reescribir cada componente. OJO: `accent` en shadcn es la
+     superficie de hover (ghost/outline), no el color de énfasis — el énfasis de
+     la marca es `secondary` (el rojo del logo). */
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--foreground);
+  --color-accent: var(--muted-background);
+  --color-accent-foreground: var(--foreground);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--secondary-foreground);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  /* OJO: el nombre no puede ser `shadow-card` — Tailwind ya genera esa clase a
+     partir de `--color-card` (como color de sombra) y las dos colisionan. */
+  --shadow-elevated: var(--shadow-elevated-value);
+  --shadow-header: var(--shadow-header-value);
+
+  --font-heading: var(--font-stack-value);
+  --font-subheading: var(--font-stack-value);
+  --font-body: var(--font-stack-value);
+
+  --breakpoint-xs: 420px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------------------------------------------------------------------- */
+/* Estilos base                                                           */
+/* ---------------------------------------------------------------------- */
+
+@layer base {
+  /* Tailwind v4 usa `currentColor` como color de borde por defecto; los
+     componentes de ui/ escriben `border` a secas esperando el token.
+     OJO: acá y en `body` va el token crudo (`--border`), no el alias
+     `--color-border` del @theme. El alias se resuelve una sola vez en :root y
+     lo que hereda es el color YA calculado, así que dentro de un `.theme-light`
+     seguiría llegando el borde del tema del documento. */
+  *,
+  ::after,
+  ::before {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-weight: var(--weight-body);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* El peso se declara explícito en vez de heredar el `bold` del user-agent.
+     OJO con el mapeo de los @font-face de arriba: los pesos CSS están corridos
+     a propósito respecto del nombre del archivo — 400 = Regular, 600 = Medium,
+     700 = SemiBold. No hay cara para 500 ni por encima de 700, así que pedir
+     esos valores cae en la más cercana (y puede salir negrita sintética). */
+  h1,
+  h2 {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    letter-spacing: 0.01em;
+  }
+
+
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-subheading);
+    font-weight: var(--weight-subheading);
+    letter-spacing: 0.01em;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.125rem);
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    line-height: 1.3;
+  }
+
+  /* El peso ya lo fija la regla `h3, h4, h5` de arriba; acá solo la escala. */
+  h4,
+  h5 {
+    font-size: 1rem;
+    line-height: 1.4;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Ancho máximo de contenido compartido por header/main/secciones/footer */
+@utility content-wrapper {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 640px) {
+    padding-inline: 1.5rem;
+  }
 }
+
+/* Tira horizontal scrolleable (chips de categoría) sin barra visible */
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/*
+ * Nota (dark mode): las imágenes de producto vienen de Cloudinary con fondo
+ * blanco/transparente fijo (no hay variante para modo oscuro). Por eso la
+ * ProductCard entera se renderiza siempre en claro (`.theme-light` en la Card
+ * y en los popovers que abre), y se ve igual en ambos temas.
+ */

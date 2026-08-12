@@ -1,60 +1,59 @@
 import type { Metadata } from "next";
+
+import { THEME_INIT_SCRIPT } from "@/libs/theme";
 import "./globals.css";
 
+const SITE_NAME = "Montecarlo Hogar";
+const SITE_DESCRIPTION =
+  "Electrodomésticos, herramientas, bicicletas y artículos para el hogar. Catálogo online de Montecarlo Hogar.";
+// TODO: reemplazar por el dominio real una vez que el cliente lo defina/compre.
+const SITE_URL = "https://montecarlohogar.com.ar";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(""), // https://tu-dominio.com
+  metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "", // Nombre del sitio
-    template: "%s | ", // Nombre del sitio
+    default: `${SITE_NAME} | Electrodomésticos y artículos para el hogar`,
+    template: `%s | ${SITE_NAME}`,
   },
-  applicationName: "", // Nombre del sitio
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: { canonical: "/" },
 
-  creator: "Matías Ibarra", // Autor del sitio
-  authors: [ { name: 'Matías Ibarra', url: '' } ], // Autor del sitio
-
-  icons: {
-    icon: "/icon.png", // 32x32 o 48x48
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png", // 180x180
-    other: [
-      { rel: 'manifest', url: '/site.webmanifest' }
-    ]
-  },
+  creator: "Matías Ibarra",
+  authors: [{ name: "Matías Ibarra" }],
 
   generator: "Next.js",
   keywords: [
-    'electrodomésticos',
-    'electrodomesticos',
-    'tienda online',
-    'ofertas',
-    'herramientas',
-    'ventiladores',
-    'climatización',
-    'climatizacion',
-    'muebles',
-    'línea blanca',
-    'blanqueria',
-    'bazar',
-    'artículos varios',
-    'articulos varios',
-    'Pritia',
-    'comprar online',
-    'Argentina'
+    "electrodomésticos",
+    "electrodomesticos",
+    "tienda online",
+    "ofertas",
+    "herramientas",
+    "bicicletas",
+    "climatización",
+    "climatizacion",
+    "muebles",
+    "línea blanca",
+    "blanquería",
+    "bazar",
+    "artículos para el hogar",
+    "Montecarlo Hogar",
+    "comprar online",
+    "Argentina",
   ],
 
   openGraph: {
-    title: "", // Nombre del sitio
-    description: "", // Descripción del sitio
-    url: "", // https://tu-dominio.com
-    siteName: "", // Nombre del sitio
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     images: [
       {
-        url: "", // URL de la imagen (og:image)
-        width: 1200,
-        height: 630,
-        alt: "", // Alt de la imagen
-        type: "image/png",
+        url: "/logo.webp",
+        width: 480,
+        height: 480,
+        alt: SITE_NAME,
       },
     ],
     locale: "es_AR",
@@ -63,9 +62,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "", // Nombre del sitio
-    description: "", // Descripción del sitio
-    images: [""], // URL de la imagen
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/logo.webp"],
   },
 
   robots: {
@@ -76,16 +75,18 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: false,
-    }
-  }
+    },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className="h-full antialiased"
-    >
+    // suppressHydrationWarning: el script de abajo escribe `data-theme` en el
+    // <html> antes de que React hidrate, así que el markup del server no coincide.
+    <html lang="es" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

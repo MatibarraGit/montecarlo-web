@@ -30,5 +30,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  // `codigo-de-lovable` es la exportación de referencia de Lovable.ai (React puro,
+  // con imports que no existen acá). Se conserva como material de consulta, pero
+  // no forma parte del build.
+  "exclude": ["node_modules", "codigo-de-lovable"]
 }

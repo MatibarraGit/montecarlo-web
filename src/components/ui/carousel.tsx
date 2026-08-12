@@ -95,6 +95,9 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // Sync inicial del estado de scroll con embla al montar; las actualizaciones
+    // posteriores llegan por los listeners de abajo (no por este llamado directo).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
