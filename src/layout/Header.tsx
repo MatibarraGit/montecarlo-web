@@ -21,7 +21,7 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
 
   return (
     <header className="bg-primary text-primary-foreground shadow-header sticky top-0 z-40">
-      <div className="content-wrapper grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3 lg:flex lg:gap-6">
+      <div className="content-wrapper flex items-center gap-3 py-3 lg:gap-6">
         <a href="#top" className="flex min-w-0 shrink-0 w-fit items-center gap-2">
           <Image
             src="/logo.webp"
@@ -31,13 +31,10 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
             priority
             className="bg-primary-foreground/95 size-10 shrink-0 rounded-full p-0.5"
           />
-          <span className="font-heading truncate text-xl leading-none font-bold tracking-wide uppercase">
-            {SITE_NAME}
-          </span>
         </a>
 
         {/* Buscador desktop: ocupa el espacio libre entre el logo y los links */}
-        <div className="hidden min-w-0 flex-1 lg:block lg:px-6">
+        <div className="min-w-0 flex-1 lg:px-6">
           <ProductSearch value={searchTerm} onChange={onSearchChange} />
         </div>
 
@@ -64,7 +61,7 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
               <button
                 type="button"
                 aria-label="Abrir menú"
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 inline-flex size-10 items-center justify-center rounded-full border transition-colors lg:hidden cursor-pointer"
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 size-10 items-center justify-center rounded-full border transition-colors hidden xs:inline-flex lg:hidden cursor-pointer"
               >
                 <Menu className="size-5" aria-hidden />
               </button>
@@ -92,13 +89,20 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
         </div>
       </div>
 
-      {/* Buscador mobile: debajo de la fila principal, 92% del ancho */}
-      <div className="pb-3 lg:hidden">
-        <ProductSearch
-          value={searchTerm}
-          onChange={onSearchChange}
-          className="mx-auto w-[92%]"
-        />
+      {/* Links de navegación: debajo de la fila principal, 92% del ancho */}
+      <div className="pb-3 xs:hidden">
+        <nav className="flex justify-evenly mt-2 py-1 px-4" aria-label="Navegación principal">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-secondary text-left text-base font-semibold transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </header>
   );

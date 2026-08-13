@@ -7,7 +7,6 @@ import { cn } from "@/libs/utils";
 import { getServerTheme, getTheme, setTheme, subscribeToTheme } from "@/libs/theme";
 
 type ThemeToggleProps = {
-  /** `icon`: botón redondo del header. `menu`: fila con texto, para el menú mobile. */
   variant?: "icon" | "menu";
   className?: string;
 };

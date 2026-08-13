@@ -16,8 +16,12 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground mt-16">
       <div className="content-wrapper py-10">
         {/* Fila 1: identidad y el único dato que comparten las tres sucursales */}
-        <div className="grid gap-8 sm:grid-cols-[1.5fr_1fr_1fr]">
-          <div>
+        {/* 3 columnas recién en `lg`: a 640px el reparto da ~151px por columna y
+            ni el email ni el handle de Instagram entran (son tokens que no se
+            parten), así que el grid desbordaba la página. Entre `sm` y `md` la
+            identidad ocupa el ancho completo y las dos listas van a la par. */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
+          <div className="min-w-0 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2">
               <Image
                 src="/logo.png"
@@ -36,15 +40,18 @@ export function Footer() {
             </p>
 
             <a
-              className="text-primary-foreground/80 hover:text-primary-foreground mt-4 inline-flex items-center gap-2 py-1 text-sm transition-colors"
+              className="text-primary-foreground/80 hover:text-primary-foreground mt-4 inline-flex items-start gap-2 py-1 text-sm transition-colors"
               href={`mailto:${CONTACT_EMAIL}`}
             >
-              <Mail className="size-4 shrink-0" aria-hidden />
-              {CONTACT_EMAIL}
+              <Mail className="mt-0.5 size-4 shrink-0" aria-hidden />
+              {/* `wrap-anywhere` (y no `wrap-break-word`) porque solo ese achica
+                  el min-content: es lo que deja que la columna se angoste en
+                  celulares en vez de estirar el grid. */}
+              <span className="min-w-0 wrap-anywhere">{CONTACT_EMAIL}</span>
             </a>
           </div>
 
-          <div>
+          <div className="min-w-0">
             <h3 className="text-lg uppercase">Navegación</h3>
             <ul className="text-primary-foreground/80 mt-3 space-y-2 text-sm">
               {NAV_LINKS.map((link) => (
@@ -60,51 +67,41 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="min-w-0">
             <h3 className="text-lg uppercase">Seguinos</h3>
-            <div className="mt-3 flex-col"> 
+            {/* `items-start` deja cada link del ancho de su contenido, como los
+                de Navegación, en vez de estirarse a toda la columna. */}
+            <div className="mt-3 flex flex-col items-start gap-3">
               <a
                 href={SOCIAL_INSTAGRAM}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Instagram"
-                className="flex items-center py-1"
+                className="text-primary-foreground/80 hover:text-primary-foreground flex items-center gap-2 py-2 text-sm transition-colors"
               >
                 <Image
                   src="/icons/instagram.webp"
-                  alt=""
+                  alt="Instagram"
                   width={80}
                   height={80}
-                  aria-hidden
-                  className="size-8"
+                  className="size-6 shrink-0"
                 />
-                <span
-                  className="pl-2"
-                >
-                  @montecarlohogar
-                </span>
+                <span>@montecarlohogar</span>
               </a>
 
               <a
                 href={SOCIAL_FACEBOOK}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Facebook"
-                className="flex items-center py-1 mt-3"
+                className="text-primary-foreground/80 hover:text-primary-foreground flex items-center gap-2 py-2 text-sm transition-colors"
               >
                 <Image
                   src="/icons/facebook.webp"
-                  alt=""
+                  alt="Facebook"
                   width={80}
                   height={80}
-                  aria-hidden
-                  className="size-8"
+                  className="size-6 shrink-0"
                 />
-                  <span
-                    className="pl-2"
-                  >
-                    Montecarlo hogar 
-                  </span>
+                <span>Montecarlo hogar</span>
               </a>
             </div>
           </div>

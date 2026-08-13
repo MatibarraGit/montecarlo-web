@@ -21,7 +21,9 @@ export function ContactSection() {
 
       {/* Datos comunes a las tres sucursales */}
       <div className="bg-primary text-primary-foreground mt-8 grid gap-6 rounded-2xl p-6 sm:grid-cols-2 sm:p-8">
-        <div className="flex items-start gap-3">
+        {/* `min-w-0` en el item del grid: el `truncate` del email no alcanza si
+            la celda no puede achicarse por debajo de su min-content. */}
+        <div className="flex min-w-0 items-start gap-3">
           <Mail className="mt-0.5 size-5 shrink-0" aria-hidden />
           <div className="min-w-0">
             <p className="font-bold">Email</p>
@@ -37,7 +39,7 @@ export function ContactSection() {
           </div>
         </div>
 
-        <div className="flex items-start gap-3">
+        <div className="flex min-w-0 items-start gap-3">
           <Clock className="mt-0.5 size-5 shrink-0" aria-hidden />
           <div className="min-w-0">
             <p className="font-bold">Horarios</p>

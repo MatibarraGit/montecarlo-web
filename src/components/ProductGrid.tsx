@@ -52,10 +52,11 @@ export function ProductGrid({ products }: ProductGridProps) {
     <div className="space-y-12">
       {groupByCategory(products).map((section) => (
         <section key={section.id} aria-labelledby={`categoria-${section.id}`}>
-          <div className="mb-4 flex items-end gap-3">
+          <div className="mb-4 flex flex-wrap items-end gap-x-3">
             <h3
               id={`categoria-${section.id}`}
-              className="text-2xl tracking-wide uppercase sm:text-3xl"
+              // hyphens-auto es para que el texto se corte por sílabas según el diccionario del navegador y con la etiqueta lang="es" en el <html>
+              className="min-w-0 text-2xl tracking-wide wrap-break-word hyphens-auto uppercase sm:text-3xl"
             >
               {section.name}
             </h3>

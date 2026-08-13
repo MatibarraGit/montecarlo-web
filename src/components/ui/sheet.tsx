@@ -72,8 +72,10 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent absolute top-4 right-4 rounded-xs opacity-70 transition-opacity cursor-pointer hover:opacity-100 focus:ring-2 focus:outline-hidden disabled:pointer-events-none">
-          <XIcon className="size-4" />
+        {/* Área táctil de 40px (el ícono solo daría 16px, casi imposible de
+            acertar en mobile). `z-10` lo mantiene sobre el contenido del panel. */}
+        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring hover:bg-accent absolute top-3 right-3 z-10 inline-flex size-10 items-center justify-center rounded-full opacity-70 transition-opacity cursor-pointer hover:opacity-100 focus:ring-2 focus:outline-hidden disabled:pointer-events-none">
+          <XIcon className="size-5" aria-hidden />
           <span className="sr-only">Cerrar</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
@@ -85,7 +87,8 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn("flex flex-col gap-1.5 p-4", className)}
+      // `pr-14`: deja libre la esquina donde vive el botón de cerrar
+      className={cn("flex flex-col gap-1.5 p-4 pr-14", className)}
       {...props}
     />
   )

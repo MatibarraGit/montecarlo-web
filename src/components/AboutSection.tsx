@@ -23,11 +23,17 @@ export function AboutSection() {
   return (
     <section id="nosotros" className="content-wrapper mt-16 scroll-mt-32">
       <div className="grid items-center gap-8 lg:grid-cols-2">
-        <div>
+        {/* `min-w-0`: sin esto la columna del grid no baja del min-content de su
+            contenido — "ELECTRODOMÉSTICOS" en el h2 — y desborda en pantallas
+            angostas. El `break-words`/`hyphens-auto` parte la palabra recién
+            cuando no entra. */}
+        <div className="min-w-0">
           <span className="text-secondary text-xs font-bold tracking-widest uppercase">
             Sobre nosotros
           </span>
-          <h2 className="mt-2 text-3xl uppercase sm:text-4xl">
+          {/* `text-2xl` hasta 420px: a 30px la palabra "ELECTRODOMÉSTICOS" (359px)
+              no entra en un celular angosto y quedaría cortada al medio. */}
+          <h2 className="mt-2 text-2xl break-words hyphens-auto uppercase xs:text-3xl sm:text-4xl">
             MONTECARLO HOGAR | Mayorista y Minorista de electrodomésticos
           </h2>
           <p className="text-muted-foreground mt-4">

@@ -26,7 +26,7 @@ export function ProductSearch({ value, onChange, className }: ProductSearchProps
         type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Buscar productos, categorías…"
+        placeholder="Buscar productos…"
         aria-label="Buscar productos"
         className="border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/60 focus:border-primary-foreground/50 focus:bg-primary-foreground/15 h-10 w-full rounded-full border pr-9 pl-9 text-sm focus:outline-none [&::-webkit-search-cancel-button]:appearance-none"
       />
