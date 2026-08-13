@@ -25,7 +25,7 @@ const SLIDES = [
   {
     image: "/hero-regalos-dia-del-niño-3.png",
     eyebrow: "Día del niño",
-    title: "Regalos ideales para esas personitas especiales",
+    title: "Regalos ideales para los más peques",
     text: "Bicicletas, muñecas, pistas de autos, bloques de encastre y más variedad en nuestras sucursales!",
     cta: "Conseguí tu regalo",
   },
@@ -65,7 +65,7 @@ export function HeroCarousel() {
                   <span className="bg-secondary text-secondary-foreground w-fit rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase">
                     {slide.eyebrow}
                   </span>
-                  <h2 className="font-heading text-3xl leading-tight font-bold uppercase sm:text-5xl">
+                  <h2 className="font-heading text-xl leading-tight font-bold uppercase xs:text-2xl sm:text-5xl">
                     {slide.title}
                   </h2>
                   <p className="text-primary-foreground/85 max-w-md text-sm sm:text-base">
