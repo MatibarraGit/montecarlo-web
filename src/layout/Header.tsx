@@ -22,7 +22,7 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
   return (
     <header className="bg-primary text-primary-foreground shadow-header sticky top-0 z-40">
       <div className="content-wrapper grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3 lg:flex lg:gap-6">
-        <a href="#top" className="flex min-w-0 shrink-0 items-center gap-2">
+        <a href="#top" className="flex min-w-0 shrink-0 w-fit items-center gap-2">
           <Image
             src="/logo.webp"
             alt={SITE_NAME}
@@ -64,7 +64,7 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
               <button
                 type="button"
                 aria-label="Abrir menú"
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 inline-flex size-10 items-center justify-center rounded-full border transition-colors lg:hidden"
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 inline-flex size-10 items-center justify-center rounded-full border transition-colors lg:hidden cursor-pointer"
               >
                 <Menu className="size-5" aria-hidden />
               </button>

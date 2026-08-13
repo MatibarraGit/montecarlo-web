@@ -86,8 +86,8 @@ export function HeroCarousel() {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="left-3 hidden sm:flex" />
-        <CarouselNext className="right-3 hidden sm:flex" />
+        <CarouselPrevious className="left-3 hidden cursor-pointer sm:flex" />
+        <CarouselNext className="right-3 hidden cursor-pointer sm:flex" />
       </Carousel>
     </section>
   );

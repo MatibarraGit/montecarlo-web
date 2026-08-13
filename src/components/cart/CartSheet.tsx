@@ -38,7 +38,7 @@ export function CartSheet() {
         <button
           type="button"
           aria-label={`Abrir carrito, ${totalItems} ${totalItems === 1 ? "producto" : "productos"}`}
-          className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 focus-visible:ring-primary-foreground/60 relative inline-flex h-10 shrink-0 items-center gap-2 rounded-full border bg-transparent px-3 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none sm:px-4"
+          className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/12 focus-visible:ring-primary-foreground/60 relative inline-flex h-10 shrink-0 items-center gap-2 rounded-full border bg-transparent px-3 text-sm font-semibold transition-colors cursor-pointer focus-visible:ring-2 focus-visible:outline-none sm:px-4"
         >
           <ShoppingCart className="size-4" aria-hidden />
           <span className="hidden sm:inline">Carrito</span>
@@ -87,7 +87,7 @@ export function CartSheet() {
                       type="button"
                       size="icon-sm"
                       variant="outline"
-                      className="size-7"
+                      className="size-7 cursor-pointer"
                       aria-label="Restar cantidad"
                       onClick={() => decreaseQuantity(item.productId)}
                     >
@@ -100,7 +100,7 @@ export function CartSheet() {
                       type="button"
                       size="icon-sm"
                       variant="outline"
-                      className="size-7"
+                      className="size-7 cursor-pointer"
                       aria-label="Sumar cantidad"
                       onClick={() => increaseQuantity(item.productId)}
                     >
@@ -113,7 +113,7 @@ export function CartSheet() {
                   type="button"
                   size="icon-sm"
                   variant="ghost"
-                  className="text-muted-foreground hover:text-danger"
+                  className="text-muted-foreground cursor-pointer hover:text-danger"
                   aria-label={`Quitar ${item.name} del carrito`}
                   onClick={() => removeFromCart(item.productId)}
                 >
@@ -143,7 +143,7 @@ export function CartSheet() {
           </Button>
 
           {items.length > 0 && (
-            <Button type="button" variant="ghost" onClick={clearCart}>
+            <Button type="button" variant="ghost" onClick={clearCart} className="cursor-pointer">
               Vaciar carrito
             </Button>
           )}

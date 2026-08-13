@@ -4,7 +4,7 @@ import { HeartHandshake, Truck, ShieldCheck } from "lucide-react";
 const PILLARS = [
   {
     icon: HeartHandshake,
-    title: "Atención de personalizada",
+    title: "Atención personalizada",
     text: "Te asesoramos producto por producto, como lo hacemos desde hace años.",
   },
   {
